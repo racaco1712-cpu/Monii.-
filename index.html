@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Monii 🩵</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pink:#d85892;--blue:#65c8e5;--ink:#64384d}
+body{
+  min-height:100vh; overflow-x:hidden; font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at 50% 15%,#fff 0,#fff7fb 38%,#fdeaf3 70%,#eafaff 100%);
+  color:var(--ink);
+}
+#intro{
+  position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at center,#fff,#fff3f8 58%,#eafaff);
+  transition:opacity 1.1s ease;
+}
+#intro.hide{opacity:0;pointer-events:none}
+.intro-inner{text-align:center}
+.intro-inner h2{font-size:clamp(20px,5vw,29px);font-weight:normal;color:#c95388;margin-bottom:45px}
+.seed-wrap{height:170px;position:relative}
+.seed{
+  position:absolute;left:50%;bottom:25px;width:27px;height:38px;transform:translateX(-50%) rotate(18deg);
+  border-radius:55% 45% 55% 45%;background:linear-gradient(145deg,#8a5b42,#543422);
+  box-shadow:0 8px 16px #79513a44;cursor:pointer;animation:seedPulse 1.5s infinite
+}
+.seed:after{content:"";position:absolute;width:8px;height:17px;border-left:2px solid #4f9d68;left:12px;top:-11px;opacity:0}
+#intro.germinate .seed:after{animation:sprout .9s .3s forwards}
+.hint{color:#b56a8b;font-size:17px;animation:breathe 2s infinite}
+.story{min-height:100vh;opacity:0;transition:opacity 1.1s ease;padding:35px 5% 145px}
+.story.show{opacity:1}
+.layout{max-width:1180px;margin:auto;min-height:680px;display:grid;grid-template-columns:1fr 1.15fr;align-items:center;gap:20px}
+.message{opacity:0;transform:translateY(15px);transition:1.2s ease}
+.message.show{opacity:1;transform:none}
+.message h1{font-size:clamp(27px,3vw,40px);line-height:1.15;color:#cf5089;margin-bottom:27px}
+.message p{font-size:18px;line-height:1.75;margin:0 0 17px;max-width:500px}
+.signature{color:#50b5d4;font-weight:bold;font-size:21px!important}
+.tree-stage{height:620px;position:relative}
+.ground{
+ position:absolute;left:50%;bottom:45px;width:320px;height:4px;transform:translateX(-50%) scaleX(0);
+ background:#c97b9f;border-radius:50%;transform-origin:center;transition:1s ease
+}
+.ground.show{transform:translateX(-50%) scaleX(1)}
+.tree-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.branch{
+ fill:none;stroke:#76513d;stroke-linecap:round;stroke-linejoin:round;
+ stroke-dasharray:1000;stroke-dashoffset:1000
+}
+#trunk{stroke-width:25}
+.branch.medium{stroke-width:13}
+.branch.small{stroke-width:7}
+.grow{animation:draw 1.5s ease-out forwards}
+.heart-leaf{
+ position:absolute;opacity:0;line-height:1;transform:scale(0);pointer-events:none;
+ filter:drop-shadow(0 2px 2px #b65b8440);
+ animation:bloom .75s cubic-bezier(.2,.9,.3,1.25) forwards
+}
+.falling{
+ position:fixed;top:-30px;z-index:20;pointer-events:none;animation:fall linear forwards
+}
+.counter{
+ position:fixed;left:0;right:0;bottom:0;z-index:50;padding:13px 5% 15px;
+ background:#fff9fccc;backdrop-filter:blur(10px);border-top:1px solid #e8b6cc;
+ opacity:0;transform:translateY(100%);transition:1s ease
+}
+.counter.show{opacity:1;transform:none}
+.counter-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.counter-title{font-size:16px}
+.units{display:flex;gap:22px}
+.unit{text-align:center;min-width:52px}
+.unit span{display:block;font-family:Arial,sans-serif;font-size:24px;font-weight:700;color:#c94f87}
+.unit small{font-family:Arial,sans-serif;color:#777}
+.date{color:#52b5d4;font-weight:bold;white-space:nowrap}
+@keyframes seedPulse{50%{transform:translateX(-50%) rotate(18deg) scale(1.13)}}
+@keyframes breathe{50%{opacity:.45}}
+@keyframes sprout{to{opacity:1;transform:translateY(-7px)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes bloom{0%{opacity:0;transform:scale(0) translateY(15px)}70%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@keyframes fall{0%{opacity:0;transform:translateY(-30px) rotate(0)}10%{opacity:.9}100%{opacity:0;transform:translateY(110vh) rotate(330deg)}}
+@media(max-width:780px){
+ .story{padding:25px 16px 160px}
+ .layout{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:0;min-height:auto}
+ .tree-stage{width:100%;height:480px;margin-top:-10px}
+ .message{text-align:center;margin-top:-35px}
+ .message h1{margin-bottom:15px}.message p{font-size:16px;line-height:1.55}
+ .counter-inner{flex-direction:column;gap:7px}.units{gap:10px}.unit{min-width:48px}.unit span{font-size:19px}
+ .counter-title{font-size:14px}.date{font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-inner">
+    <h2>Todo gran amor comienza con algo pequeño… 🩵</h2>
+    <div class="seed-wrap"><div class="seed" id="seed" aria-label="Toca la semilla"></div></div>
+    <div class="hint">Toca la semilla</div>
+  </div>
+</div>
+
+<main class="story" id="story">
+  <div class="layout">
+    <section class="message" id="message">
+      <h1>Para Monii,<br>el amor de mi vida. 🩵</h1>
+      <p>Desde aquel 12 de octubre, mi vida tiene un motivo más para sonreír.</p>
+      <p>Gracias por cada momento, cada sonrisa y cada recuerdo que hemos construido juntos.</p>
+      <p>Quiero seguir viendo crecer nuestra historia, igual que este pequeño árbol: poco a poco, pero llena de amor.</p>
+      <p class="signature">Te amo. 🩵<br>— Rafa</p>
+    </section>
+
+    <section class="tree-stage" id="treeStage">
+      <svg class="tree-svg" viewBox="0 0 520 620" aria-hidden="true">
+        <path id="trunk" class="branch" d="M260 565 C258 500 257 440 260 365 C260 315 258 280 260 245"/>
+        <path class="branch medium" d="M260 410 C220 380 185 345 155 300"/>
+        <path class="branch medium" d="M260 395 C300 360 337 325 370 280"/>
+        <path class="branch medium" d="M260 345 C230 315 215 275 205 235"/>
+        <path class="branch medium" d="M260 340 C290 305 305 270 315 225"/>
+        <path class="branch small" d="M156 301 C130 280 110 250 100 220"/>
+        <path class="branch small" d="M157 301 C175 270 178 245 175 215"/>
+        <path class="branch small" d="M369 280 C400 255 418 230 425 200"/>
+        <path class="branch small" d="M370 280 C350 250 348 225 352 198"/>
+        <path class="branch small" d="M205 235 C180 215 160 190 150 165"/>
+        <path class="branch small" d="M315 225 C345 200 360 175 365 150"/>
+      </svg>
+      <div id="leaves"></div>
+      <div class="ground" id="ground"></div>
+    </section>
+  </div>
+</main>
+
+<section class="counter" id="counter">
+ <div class="counter-inner">
+   <div class="counter-title">Nuestro amor comenzó hace…</div>
+   <div class="units">
+    <div class="unit"><span id="days">0</span><small>días</small></div>
+    <div class="unit"><span id="hours">00</span><small>horas</small></div>
+    <div class="unit"><span id="minutes">00</span><small>min</small></div>
+    <div class="unit"><span id="seconds">00</span><small>seg</small></div>
+   </div>
+   <div class="date">12 · 10 · 2025 🩵</div>
+ </div>
+</section>
+
+<script>
+const intro=document.getElementById("intro"), story=document.getElementById("story"),
+message=document.getElementById("message"), ground=document.getElementById("ground"),
+counter=document.getElementById("counter"), leaves=document.getElementById("leaves"),
+stage=document.getElementById("treeStage");
+let started=false, rain=false;
+
+const colors=["#ff3f8f","#ff5fa2","#ff78af","#ff9ac4","#efb0cf","#d94c98","#c64d96",
+"#4dbbe0","#67c9e8","#86d7ed","#a8e8f6"];
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+async function begin(){
+ if(started)return; started=true; intro.classList.add("germinate");
+ await wait(900); intro.classList.add("hide");
+ await wait(650); story.classList.add("show"); ground.classList.add("show");
+ await wait(250);
+ const branches=[...document.querySelectorAll(".branch")];
+ branches[0].classList.add("grow");
+ await wait(1250);
+ branches.slice(1,5).forEach((b,i)=>setTimeout(()=>b.classList.add("grow"),i*160));
+ await wait(1050);
+ branches.slice(5).forEach((b,i)=>setTimeout(()=>b.classList.add("grow"),i*120));
+ await wait(550);
+ bloomHeart();
+ await wait(3000);
+ message.classList.add("show"); counter.classList.add("show"); rain=true;
+}
+intro.addEventListener("click",begin);
+
+function bloomHeart(){
+ const rect=stage.getBoundingClientRect();
+ const sx=rect.width/520, sy=rect.height/620;
+ const count=440;
+ for(let i=0;i<count;i++){
+   const t=Math.random()*Math.PI*2, r=Math.sqrt(Math.random());
+   const x=16*Math.sin(t)**3;
+   const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+   const px=(260+x*12.0*r)*sx;
+   const py=(210-y*10.4*r)*sy;
+   const el=document.createElement("span");
+   el.className="heart-leaf"; el.textContent="♥";
+   el.style.left=px+"px"; el.style.top=py+"px";
+   el.style.color=colors[Math.floor(Math.random()*colors.length)];
+   el.style.fontSize=(9+Math.random()*13)*Math.min(sx,sy)+"px";
+   // centro primero, bordes después
+   const delay=.2 + r*2.2 + Math.random()*.55;
+   el.style.animationDelay=delay+"s";
+   leaves.appendChild(el);
+ }
+}
+
+function fallingHeart(){
+ if(!rain)return;
+ const e=document.createElement("div"); e.className="falling"; e.textContent="♥";
+ e.style.left=Math.random()*100+"vw";
+ e.style.color=colors[Math.floor(Math.random()*colors.length)];
+ e.style.fontSize=(11+Math.random()*14)+"px";
+ const d=5+Math.random()*5;e.style.animationDuration=d+"s";
+ document.body.appendChild(e);setTimeout(()=>e.remove(),d*1000);
+}
+setInterval(fallingHeart,650);
+
+const start=new Date("2025-10-12T00:00:00-06:00");
+function tick(){
+ let ms=Date.now()-start.getTime(); if(ms<0)ms=0;
+ const total=Math.floor(ms/1000);
+ document.getElementById("days").textContent=Math.floor(total/86400);
+ document.getElementById("hours").textContent=String(Math.floor(total%86400/3600)).padStart(2,"0");
+ document.getElementById("minutes").textContent=String(Math.floor(total%3600/60)).padStart(2,"0");
+ document.getElementById("seconds").textContent=String(total%60).padStart(2,"0");
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
